@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="net.nopattern.cordova.beacon"
+        version="0.1.0">
+  <name>Beacon</name>
+  <description>Cordova Beacon Plugin</description>
+  <keywords>cordova,beacon,ibeacon</keywords>
+
+  <js-module name="Beacon" src="www/Beacon.js">
+    <clobbers target="cordova.plugins.Beacon" />
+  </js-module>
+
+  <!-- android -->
+  <platform name="android">
+    <config-file parent="/*" target="res/xml/config.xml">
+      <feature name="Beacon">
+        <param name="android-package" value="net.nopattern.cordova.beacon.Beacon" />
+        <param name="onload" value="true" />
+      </feature>
+    </config-file>
+    <config-file parent="/manifest" target="AndroidManifest.xml">
+      <uses-permission android:name="android.permission.BLUETOOTH"/>
+      <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    </config-file>
+    <config-file parent="/manifest/application" target="AndroidManifest.xml">
+      <receiver android:name="net.nopattern.cordova.beacon.receiver.BootReceiver">
+        <intent-filter>
+          <action android:name="android.intent.action.BOOT_COMPLETED" />
+          <action android:name="net.nopattern.cordova.beacon.BOOT_RANGING"></action>
+        </intent-filter>
+      </receiver>
+      <service android:name="net.nopattern.cordova.beacon.service.RangingService" android:exported="false"/>
+      <service android:name="com.kontakt.sdk.android.manager.BeaconService" android:exported="false"/>
+      <service android:name="com.kontakt.sdk.android.manager.BeaconServiceL" android:exported="false"/>
+    </config-file>
+    <!-- src -->
+    <source-file src="src/android/receiver/BootReceiver.java" target-dir="src/net/nopattern/cordova/beacon/receiver" />
+    <source-file src="src/android/service/RangingService.java" target-dir="src/net/nopattern/cordova/beacon/service" />
+    <source-file src="src/android/Beacon.java" target-dir="src/net/nopattern/cordova/beacon" />
+    <!-- libs -->
+    <source-file src="src/android/libs/android-sdk_1.0.6.jar" target-dir="libs" />
+    <source-file src="src/android/libs/core-sdk-1.0.6.jar" target-dir="libs" />
+  </platform>
+
+</plugin>
