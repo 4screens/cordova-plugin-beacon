@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import android.content.Intent;
 
 import net.nopattern.cordova.beacon.BeaconConstant;
-import net.nopattern.cordova.beacon.service.RangingService;
 
 /**
  * This class echoes a string called from JavaScript.
@@ -25,7 +24,7 @@ public class Beacon extends CordovaPlugin {
   public void initialize(CordovaInterface cordova, CordovaWebView webView) {
     super.initialize(cordova, webView);
 
-    Intent intent = new Intent(bConstant.BOOT_RANGING_INTENT);
+    Intent intent = new Intent(bConstant.BOOT_MONITORING_INTENT);
     cordova.getActivity().sendBroadcast(intent);
   }
 
