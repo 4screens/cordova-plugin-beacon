@@ -38,6 +38,7 @@
     <!-- src -->
     <source-file src="src/android/receiver/BootReceiver.java" target-dir="src/net/nopattern/cordova/beacon/receiver" />
     <source-file src="src/android/service/RangingService.java" target-dir="src/net/nopattern/cordova/beacon/service" />
+    <source-file src="src/android/BeaconConstant.java" target-dir="src/net/nopattern/cordova/beacon" />
     <source-file src="src/android/Beacon.java" target-dir="src/net/nopattern/cordova/beacon" />
     <!-- libs -->
     <source-file src="src/android/libs/android-sdk_1.0.6.jar" target-dir="libs" />
