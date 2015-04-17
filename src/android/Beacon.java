@@ -9,15 +9,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
+
+import net.nopattern.cordova.beacon.BeaconConstant;
 import net.nopattern.cordova.beacon.service.RangingService;
 
 /**
  * This class echoes a string called from JavaScript.
  */
 public class Beacon extends CordovaPlugin {
+
+  BeaconConstant bConstant;
+
   @Override
   public void initialize(CordovaInterface cordova, CordovaWebView webView) {
     super.initialize(cordova, webView);
+
+    Intent intent = new Intent(bConstant.BOOT_RANGING_INTENT);
+    cordova.getActivity().sendBroadcast(intent);
   }
 
   @Override
@@ -31,10 +40,10 @@ public class Beacon extends CordovaPlugin {
   }
 
   private void coolMethod(String message, CallbackContext callbackContext) {
-      if (message != null && message.length() > 0) {
-          callbackContext.success(message);
-      } else {
-          callbackContext.error("Expected one non-empty string argument.");
-      }
+    if (message != null && message.length() > 0) {
+      callbackContext.success(message);
+    } else {
+      callbackContext.error("Expected one non-empty string argument.");
+    }
   }
 }
