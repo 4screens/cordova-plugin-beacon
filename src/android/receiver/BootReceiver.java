@@ -1,8 +1,10 @@
 package net.nopattern.cordova.beacon.receiver;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import net.nopattern.cordova.beacon.BeaconConstant;
 import net.nopattern.cordova.beacon.service.RangingService;
@@ -20,6 +22,23 @@ public class BootReceiver extends BroadcastReceiver
       startMonitoringService(context);
     } else if( action == bConstant.BOOT_RANGING_INTENT ) {
       startRangingService(context);
+    } else if( action.equals(bConstant.STATE_CHANGED_INTENT) ) {
+      final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+
+      switch( state ) {
+        case BluetoothAdapter.STATE_OFF:
+          Log.d(bConstant.LOG_TAG, "Bluetooth off");
+          break;
+        case BluetoothAdapter.STATE_TURNING_OFF:
+          Log.d(bConstant.LOG_TAG, "Turning Bluetooth off...");
+          break;
+        case BluetoothAdapter.STATE_ON:
+          Log.d(bConstant.LOG_TAG, "Bluetooth on");
+          break;
+        case BluetoothAdapter.STATE_TURNING_ON:
+          Log.d(bConstant.LOG_TAG, "Turning Bluetooth on...");
+          break;
+      }
     }
   }
 

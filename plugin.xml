@@ -27,9 +27,10 @@
     <config-file parent="/manifest/application" target="AndroidManifest.xml">
       <receiver android:name="net.nopattern.cordova.beacon.receiver.BootReceiver">
         <intent-filter>
-          <action android:name="android.intent.action.BOOT_COMPLETED" />
-          <action android:name="net.nopattern.cordova.beacon.BOOT_RANGING"></action>
-          <action android:name="net.nopattern.cordova.beacon.BOOT_MONITORING"></action>
+          <action android:name="android.bluetooth.adapter.action.STATE_CHANGED"/>
+          <action android:name="android.intent.action.BOOT_COMPLETED"/>
+          <action android:name="net.nopattern.cordova.beacon.BOOT_MONITORING"/>
+          <action android:name="net.nopattern.cordova.beacon.BOOT_RANGING"/>
         </intent-filter>
       </receiver>
       <service android:name="net.nopattern.cordova.beacon.service.MonitoringService" android:exported="false"/>
