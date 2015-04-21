@@ -57,6 +57,11 @@ public class MonitoringService extends Service {
       @Override
       public void onBeaconAppeared(final Region region, final BeaconDevice beaconDevice) {
         Toast.makeText(getApplicationContext(), beaconDevice.getUniqueId() + ": " + beaconDevice.getAccuracy(), Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent(bConstant.MONITORING_APPEARED_INTENT);
+        intent.putExtra(bConstant.EXTRA_DEVICE_ID, beaconDevice.getUniqueId());
+        intent.putExtra(bConstant.EXTRA_DEVICE_ACCURACY, beaconDevice.getAccuracy());
+        getApplicationContext().sendBroadcast(intent);
       }
 
       @Override
