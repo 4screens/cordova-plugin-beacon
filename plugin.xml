@@ -35,14 +35,12 @@
         </intent-filter>
       </receiver>
       <service android:name="net.nopattern.cordova.beacon.service.MonitoringService" android:exported="false"/>
-      <service android:name="net.nopattern.cordova.beacon.service.RangingService" android:exported="false"/>
       <service android:name="com.kontakt.sdk.android.manager.BeaconService" android:exported="false"/>
       <service android:name="com.kontakt.sdk.android.manager.BeaconServiceL" android:exported="false"/>
     </config-file>
     <!-- src -->
     <source-file src="src/android/receiver/BootReceiver.java" target-dir="src/net/nopattern/cordova/beacon/receiver" />
     <source-file src="src/android/service/MonitoringService.java" target-dir="src/net/nopattern/cordova/beacon/service" />
-    <source-file src="src/android/service/RangingService.java" target-dir="src/net/nopattern/cordova/beacon/service" />
     <source-file src="src/android/BeaconConstant.java" target-dir="src/net/nopattern/cordova/beacon" />
     <source-file src="src/android/Beacon.java" target-dir="src/net/nopattern/cordova/beacon" />
     <!-- libs -->
