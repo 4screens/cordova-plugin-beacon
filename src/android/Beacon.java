@@ -30,19 +30,17 @@ public class Beacon extends CordovaPlugin {
 
   @Override
   public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-    if (action.equals("coolMethod")) {
-      String message = args.getString(0);
-      this.coolMethod(message, callbackContext);
+    if (action.equals("status")) {
+      this.status(callbackContext);
       return true;
     }
     return false;
   }
 
-  private void coolMethod(String message, CallbackContext callbackContext) {
-    if (message != null && message.length() > 0) {
-      callbackContext.success(message);
-    } else {
-      callbackContext.error("Expected one non-empty string argument.");
-    }
+  private void status(CallbackContext callbackContext) {
+    Intent notificationIntent = cordova.getActivity().getIntent();
+    String action = notificationIntent.getAction();
+
+    callbackContext.success("{\"notification\": " + action.equals(bConstant.NOTIFICATION_INTENT) + "}");
   }
 }
