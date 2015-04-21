@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.kontakt.sdk.android.manager.BeaconManager;
 import com.kontakt.sdk.android.configuration.MonitorPeriod;
@@ -19,13 +19,16 @@ import com.kontakt.sdk.android.factory.Filters;
 import java.util.List;
 import java.util.UUID;
 
+import net.nopattern.cordova.beacon.BeaconConstant;
+
 public class MonitoringService extends Service {
 
+  private BeaconConstant bConstant;
   private BeaconManager beaconManager;
 
   @Override
   public void onCreate() {
-    super.onCreate();
+    Log.d(bConstant.LOG_TAG, "MonitoringService :: onCreate");
 
     beaconManager = BeaconManager.newInstance(this);
     beaconManager.setMonitorPeriod(MonitorPeriod.MINIMAL);
@@ -44,19 +47,22 @@ public class MonitoringService extends Service {
     beaconManager.registerMonitoringListener(new BeaconManager.MonitoringListener() {
       @Override
       public void onMonitorStart() {
+        Log.d(bConstant.LOG_TAG, "MonitoringService :: beaconManager - onMonitorStart");
       }
 
       @Override
       public void onMonitorStop() {
+        Log.d(bConstant.LOG_TAG, "MonitoringService :: beaconManager - onMonitorStop");
       }
 
       @Override
       public void onBeaconsUpdated(final Region region, final List<BeaconDevice> beaconDevices) {
+        Log.d(bConstant.LOG_TAG, "MonitoringService :: beaconManager - onBeaconsUpdated");
       }
 
       @Override
       public void onBeaconAppeared(final Region region, final BeaconDevice beaconDevice) {
-        Toast.makeText(getApplicationContext(), beaconDevice.getUniqueId() + ": " + beaconDevice.getAccuracy(), Toast.LENGTH_LONG).show();
+        Log.d(bConstant.LOG_TAG, "MonitoringService :: beaconManager - onBeaconAppeared");
 
         Intent intent = new Intent(bConstant.MONITORING_APPEARED_INTENT);
         intent.putExtra(bConstant.EXTRA_DEVICE_ID, beaconDevice.getUniqueId());
@@ -66,12 +72,19 @@ public class MonitoringService extends Service {
 
       @Override
       public void onRegionEntered(final Region region) {
+        Log.d(bConstant.LOG_TAG, "MonitoringService :: beaconManager - onRegionEntered");
       }
 
       @Override
       public void onRegionAbandoned(final Region region) {
+        Log.d(bConstant.LOG_TAG, "MonitoringService :: beaconManager - onRegionAbandoned");
       }
     });
+  }
+
+  @Override
+  public int onStartCommand(Intent intent, int flags, int startId) {
+    Log.d(bConstant.LOG_TAG, "MonitoringService :: onStartCommand");
 
     try {
       beaconManager.connect(new OnServiceBoundListener() {
@@ -82,10 +95,20 @@ public class MonitoringService extends Service {
       });
     } catch(RemoteException e) {
     }
+
+    // We want this service to continue running until it is explicitly
+    // stopped, so return sticky.
+    return START_STICKY;
+  }
+
+  @Override
+  public void onTaskRemoved(Intent rootIntent) {
+    Log.d(bConstant.LOG_TAG, "MonitoringService :: onTaskRemoved");
   }
 
   @Override
   public void onDestroy() {
+    Log.d(bConstant.LOG_TAG, "MonitoringService :: onDestroy");
     super.onDestroy();
 
     beaconManager.disconnect();
@@ -95,13 +118,6 @@ public class MonitoringService extends Service {
   @Override
   public IBinder onBind(Intent intent) {
     return binder;
-  }
-
-  @Override
-  public int onStartCommand(Intent intent, int flags, int startId) {
-    // We want this service to continue running until it is explicitly
-    // stopped, so return sticky.
-    return START_STICKY;
   }
 
   public class LocalBinder extends Binder {
