@@ -14,7 +14,6 @@ import android.util.Log;
 import java.lang.Exception;
 
 import net.nopattern.cordova.beacon.BeaconConstant;
-import net.nopattern.cordova.beacon.service.RangingService;
 import net.nopattern.cordova.beacon.service.MonitoringService;
 
 public class BootReceiver extends BroadcastReceiver
@@ -28,8 +27,6 @@ public class BootReceiver extends BroadcastReceiver
 
     if( action == bConstant.BOOT_COMPLETED_INTENT || action == bConstant.BOOT_MONITORING_INTENT ) {
       startMonitoringService(context);
-    } else if( action == bConstant.BOOT_RANGING_INTENT ) {
-      startRangingService(context);
     } else if( action.equals(bConstant.STATE_CHANGED_INTENT) ) {
       final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
 
@@ -61,12 +58,6 @@ public class BootReceiver extends BroadcastReceiver
   private void startMonitoringService(Context context)
   {
     Intent intent = new Intent(context,MonitoringService.class);
-    context.startService(intent);
-  }
-
-  private void startRangingService(Context context)
-  {
-    Intent intent = new Intent(context,RangingService.class);
     context.startService(intent);
   }
 
