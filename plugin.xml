@@ -20,23 +20,23 @@
       </feature>
     </config-file>
     <config-file parent="/manifest" target="AndroidManifest.xml">
-      <uses-permission android:name="android.permission.BLUETOOTH"/>
-      <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+      <uses-permission android:name="android.permission.BLUETOOTH" />
+      <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     </config-file>
     <config-file parent="/manifest/application" target="AndroidManifest.xml">
       <receiver android:name="net.nopattern.cordova.beacon.receiver.BootReceiver">
         <intent-filter>
-          <action android:name="android.bluetooth.adapter.action.STATE_CHANGED"/>
-          <action android:name="android.intent.action.BOOT_COMPLETED"/>
-          <action android:name="net.nopattern.cordova.beacon.BOOT_MONITORING"/>
-          <action android:name="net.nopattern.cordova.beacon.BOOT_RANGING"/>
-          <action android:name="net.nopattern.cordova.beacon.MONITORING_APPEARED"/>
+          <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
+          <action android:name="android.intent.action.BOOT_COMPLETED" />
+          <action android:name="net.nopattern.cordova.beacon.BOOT_MONITORING" />
+          <action android:name="net.nopattern.cordova.beacon.BOOT_RANGING" />
+          <action android:name="net.nopattern.cordova.beacon.MONITORING_APPEARED" />
         </intent-filter>
       </receiver>
-      <service android:name="net.nopattern.cordova.beacon.service.MonitoringService" android:exported="false"/>
-      <service android:name="com.kontakt.sdk.android.manager.BeaconService" android:exported="false"/>
-      <service android:name="com.kontakt.sdk.android.manager.BeaconServiceL" android:exported="false"/>
+      <service android:exported="false" android:name="net.nopattern.cordova.beacon.service.MonitoringService" />
+      <service android:exported="false" android:name="com.kontakt.sdk.android.manager.BeaconService" />
+      <service android:exported="false" android:name="com.kontakt.sdk.android.manager.BeaconServiceL" />
     </config-file>
     <!-- src -->
     <source-file src="src/android/receiver/BootReceiver.java" target-dir="src/net/nopattern/cordova/beacon/receiver" />
@@ -49,4 +49,68 @@
     <source-file src="src/android/libs/core-sdk-1.0.6.jar" target-dir="libs" />
   </platform>
 
+  <!-- ios -->
+  <platform name="ios">
+    <config-file parent="/*" target="config.xml">
+      <feature name="Beacon">
+        <param name="ios-package" value="Beacon" />
+        <param name="onload" value="true" />
+      </feature>
+      <preference name="BackupWebStorage" value="local" />
+    </config-file>
+    <config-file parent="NSLocationAlwaysUsageDescription" target="*-Info.plist">
+      <string>Required for ios 8 compatibilty</string>
+    </config-file>
+    <!-- src -->
+    <header-file src="src/ios/Beacon.h" />
+    <source-file src="src/ios/Beacon.m" />
+    <!-- libs -->
+    <source-file src="src/ios/libs/kontakt/KontaktSDK.a" framework="true" />
+    <header-file src="src/ios/libs/kontakt/KontaktSDK.h" />
+    <header-file src="src/ios/libs/kontakt/KTKAction.h" />
+    <header-file src="src/ios/libs/kontakt/KTKActionManager.h" />
+    <header-file src="src/ios/libs/kontakt/KTKBeacon.h" />
+    <header-file src="src/ios/libs/kontakt/KTKBeaconDevice.h" />
+    <header-file src="src/ios/libs/kontakt/KTKBeaconDeviceV2.h" />
+    <header-file src="src/ios/libs/kontakt/KTKBeaconManager.h" />
+    <header-file src="src/ios/libs/kontakt/KTKBeaconProfile.h" />
+    <header-file src="src/ios/libs/kontakt/KTKBluetoothDevice.h" />
+    <header-file src="src/ios/libs/kontakt/KTKBluetoothManager.h" />
+    <header-file src="src/ios/libs/kontakt/KTKCharacteristicDescriptor.h" />
+    <header-file src="src/ios/libs/kontakt/KTKClient.h" />
+    <header-file src="src/ios/libs/kontakt/KTKCloudBeacon.h" />
+    <header-file src="src/ios/libs/kontakt/KTKCompany.h" />
+    <header-file src="src/ios/libs/kontakt/KTKConverter.h" />
+    <header-file src="src/ios/libs/kontakt/KTKDataTransferObject.h" />
+    <header-file src="src/ios/libs/kontakt/KTKDescriptor.h" />
+    <header-file src="src/ios/libs/kontakt/KTKDevice.h" />
+    <header-file src="src/ios/libs/kontakt/KTKError.h" />
+    <header-file src="src/ios/libs/kontakt/KTKFirmware.h" />
+    <header-file src="src/ios/libs/kontakt/KTKHexConverter.h" />
+    <header-file src="src/ios/libs/kontakt/KTKLocationManager.h" />
+    <header-file src="src/ios/libs/kontakt/KTKManager.h" />
+    <header-file src="src/ios/libs/kontakt/KTKNumberConverter.h" />
+    <header-file src="src/ios/libs/kontakt/KTKNumberDiscreteConverter.h" />
+    <header-file src="src/ios/libs/kontakt/KTKNumberLinearConverter.h" />
+    <header-file src="src/ios/libs/kontakt/KTKPaging.h" />
+    <header-file src="src/ios/libs/kontakt/KTKPagingBeacons.h" />
+    <header-file src="src/ios/libs/kontakt/KTKPagingConfigs.h" />
+    <header-file src="src/ios/libs/kontakt/KTKPagingDevices.h" />
+    <header-file src="src/ios/libs/kontakt/KTKPagingVenues.h" />
+    <header-file src="src/ios/libs/kontakt/KTKPublicAction.h" />
+    <header-file src="src/ios/libs/kontakt/KTKPublicBeacon.h" />
+    <header-file src="src/ios/libs/kontakt/KTKPublicVenue.h" />
+    <header-file src="src/ios/libs/kontakt/KTKRegion.h" />
+    <header-file src="src/ios/libs/kontakt/KTKServiceDescriptor.h" />
+    <header-file src="src/ios/libs/kontakt/KTKStringConverter.h" />
+    <header-file src="src/ios/libs/kontakt/KTKSubordinate.h" />
+    <header-file src="src/ios/libs/kontakt/KTKUser.h" />
+    <header-file src="src/ios/libs/kontakt/KTKUUIDConverter.h" />
+    <header-file src="src/ios/libs/kontakt/KTKVenue.h" />
+    <header-file src="src/ios/libs/kontakt/KTKVenueBase.h" />
+    <!-- frameworks -->
+    <framework src="CoreBluetooth.framework" />
+    <framework src="CoreLocation.framework" />
+    <framework src="Foundation.framework" />
+  </platform>
 </plugin>
