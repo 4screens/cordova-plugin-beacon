@@ -1,4 +1,5 @@
-var exec = require('cordova/exec');
+var exec = require('cordova/exec')
+  , channel = require('cordova/channel');
 
 exports._listener = {};
 
@@ -34,3 +35,7 @@ exports.off = function( event, callback ) {
     }
   }
 };
+
+channel.deviceready.subscribe(function () {
+    exec(null, null, 'Beacon', 'deviceready', []);
+});
