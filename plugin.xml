@@ -43,6 +43,7 @@
     <source-file src="src/android/service/MonitoringService.java" target-dir="src/net/nopattern/cordova/beacon/service" />
     <source-file src="src/android/BeaconConstant.java" target-dir="src/net/nopattern/cordova/beacon" />
     <source-file src="src/android/Beacon.java" target-dir="src/net/nopattern/cordova/beacon" />
+    <source-file src="src/android/BeaconPluginPreference.java" target-dir="src/net/nopattern/cordova/beacon" />
     <!-- libs -->
     <source-file src="src/android/libs/android-sdk_1.0.6.jar" target-dir="libs" />
     <source-file src="src/android/libs/android-support-v4.jar" target-dir="libs" />

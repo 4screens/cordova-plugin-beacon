@@ -20,11 +20,13 @@ import java.util.List;
 import java.util.UUID;
 
 import net.nopattern.cordova.beacon.BeaconConstant;
+import net.nopattern.cordova.beacon.BeaconPluginPreference;
 
 public class MonitoringService extends Service {
 
   private BeaconConstant bConstant;
   private BeaconManager beaconManager;
+  private BeaconPluginPreference beaconPluginPreference;
 
   @Override
   public void onCreate() {
@@ -34,16 +36,15 @@ public class MonitoringService extends Service {
     beaconManager.setMonitorPeriod(MonitorPeriod.MINIMAL);
     beaconManager.setForceScanConfiguration(ForceScanConfiguration.DEFAULT);
 
-    beaconManager.addFilter(new Filters.CustomFilter() {
-      @Override
-      public Boolean apply(AdvertisingPackage advertisingPackage) {
-        final UUID proximityUUID = advertisingPackage.getProximityUUID();
-        final double distance = advertisingPackage.getAccuracy();
+    UUID proximityUUID = BeaconManager.DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID;
+    beaconPluginPreference = new BeaconPluginPreference(this);
+    String proximityPreference = beaconPluginPreference.getPreference("BeaconProximityUUID", "");
 
-        return proximityUUID.equals(BeaconManager.DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID) && distance <= 1.5;
-      }
-    });
+    if( proximityPreference != "" ) {
+      proximityUUID = UUID.fromString(proximityPreference);
+    }
 
+    beaconManager.addFilter(Filters.newProximityUUIDFilter(proximityUUID));
     beaconManager.registerMonitoringListener(new BeaconManager.MonitoringListener() {
       @Override
       public void onMonitorStart() {

@@ -14,16 +14,22 @@ import android.util.Log;
 import java.lang.Exception;
 
 import net.nopattern.cordova.beacon.BeaconConstant;
+import net.nopattern.cordova.beacon.BeaconPluginPreference;
 import net.nopattern.cordova.beacon.service.MonitoringService;
 
 public class BootReceiver extends BroadcastReceiver
 {
   BeaconConstant bConstant;
+  private BeaconPluginPreference beaconPluginPreference = null;
 
   public void onReceive(Context context, Intent intent)
   {
     Log.d(bConstant.LOG_TAG, "BootReceiver :: onReceive: " + intent.getAction());
     String action = intent.getAction();
+
+    if( beaconPluginPreference == null ) {
+      beaconPluginPreference = new BeaconPluginPreference(context);
+    }
 
     if( action == bConstant.BOOT_COMPLETED_INTENT || action == bConstant.BOOT_MONITORING_INTENT ) {
       startMonitoringService(context);
