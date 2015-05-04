@@ -37,5 +37,7 @@ exports.off = function( event, callback ) {
 };
 
 channel.deviceready.subscribe(function () {
+  setTimeout(function() {
     exec(null, null, 'Beacon', 'deviceready', []);
+  }, 1000);
 });
