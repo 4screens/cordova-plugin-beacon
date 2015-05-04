@@ -87,14 +87,16 @@ public class MonitoringService extends Service {
   public int onStartCommand(Intent intent, int flags, int startId) {
     Log.d(bConstant.LOG_TAG, "MonitoringService :: onStartCommand");
 
-    try {
-      beaconManager.connect(new OnServiceBoundListener() {
-        @Override
-        public void onServiceBound() throws RemoteException {
-          beaconManager.startMonitoring();
-        }
-      });
-    } catch(RemoteException e) {
+    if(beaconManager.isBluetoothEnabled()) {
+      try {
+        beaconManager.connect(new OnServiceBoundListener() {
+          @Override
+          public void onServiceBound() throws RemoteException {
+            beaconManager.startMonitoring();
+          }
+        });
+      } catch(RemoteException e) {
+      }
     }
 
     // We want this service to continue running until it is explicitly

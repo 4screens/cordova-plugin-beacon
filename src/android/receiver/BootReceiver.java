@@ -39,16 +39,18 @@ public class BootReceiver extends BroadcastReceiver
 
       switch( state ) {
         case BluetoothAdapter.STATE_OFF:
-          Log.d(bConstant.LOG_TAG, "Bluetooth off");
+          Log.d(bConstant.LOG_TAG, "BootReceiver :: Bluetooth OFF");
           break;
         case BluetoothAdapter.STATE_TURNING_OFF:
-          Log.d(bConstant.LOG_TAG, "Turning Bluetooth off...");
+          Log.d(bConstant.LOG_TAG, "BootReceiver :: Bluetooth off...");
+          stopMonitoringService(context);
           break;
         case BluetoothAdapter.STATE_ON:
-          Log.d(bConstant.LOG_TAG, "Bluetooth on");
+          Log.d(bConstant.LOG_TAG, "BootReceiver :: Bluetooth ON");
+          startMonitoringService(context);
           break;
         case BluetoothAdapter.STATE_TURNING_ON:
-          Log.d(bConstant.LOG_TAG, "Turning Bluetooth on...");
+          Log.d(bConstant.LOG_TAG, "BootReceiver :: Bluetooth on...");
           break;
       }
     } else if( action.equals(bConstant.MONITORING_APPEARED_INTENT) ) {
@@ -71,6 +73,12 @@ public class BootReceiver extends BroadcastReceiver
   {
     Intent intent = new Intent(context,MonitoringService.class);
     context.startService(intent);
+  }
+
+  private void stopMonitoringService(Context context)
+  {
+    Intent intent = new Intent(context,MonitoringService.class);
+    context.stopService(intent);
   }
 
   private void sendNotification(Context context, String title, String text) throws Exception {
