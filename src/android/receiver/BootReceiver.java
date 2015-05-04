@@ -59,7 +59,7 @@ public class BootReceiver extends BroadcastReceiver
       final String enterRegionLocalNotification = beaconPluginPreference.getPreference("BeaconEnterRegionLocalNotification", "You did enter beacon region!");
       final long expireTimeLocalNotification = beaconPluginPreference.getPreference("BeaconExpireTimeLocalNotification", date.getTime());
 
-      if( date.getTime() > expireTimeLocalNotification ) {
+      if( date.getTime() >= expireTimeLocalNotification ) {
         try {
           sendNotification(context, "Beacon", enterRegionLocalNotification);
           beaconPluginPreference.setPreference("BeaconExpireTimeLocalNotification", expireDate.getTime());
