@@ -12,6 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.lang.Exception;
+import java.util.Date;
 
 import net.nopattern.cordova.beacon.BeaconConstant;
 import net.nopattern.cordova.beacon.BeaconPluginPreference;
@@ -51,12 +52,17 @@ public class BootReceiver extends BroadcastReceiver
           break;
       }
     } else if( action.equals(bConstant.MONITORING_APPEARED_INTENT) ) {
-      final String deviceId = intent.getStringExtra(bConstant.EXTRA_DEVICE_ID);
-      final double accuracy = intent.getDoubleExtra(bConstant.EXTRA_DEVICE_ACCURACY, 0);
+      final Date date = new Date();
+      final Date expireDate = new Date( date.getTime() + BeaconPluginPreference.ETLN_PREFERENCE_DEFAULT );
+      final String enterRegionLocalNotification = beaconPluginPreference.getPreference("BeaconEnterRegionLocalNotification", "You did enter beacon region!");
+      final long expireTimeLocalNotification = beaconPluginPreference.getPreference("BeaconExpireTimeLocalNotification", date.getTime());
 
-      try {
-        sendNotification(context, "Beacon", "Device: " + deviceId + ", " + accuracy + "m");
-      } catch (Exception e) {
+      if( date.getTime() > expireTimeLocalNotification ) {
+        try {
+          sendNotification(context, "Beacon", enterRegionLocalNotification);
+          beaconPluginPreference.setPreference("BeaconExpireTimeLocalNotification", expireDate.getTime());
+        } catch (Exception e) {
+        }
       }
     }
   }
