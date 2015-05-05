@@ -26,7 +26,6 @@ public class MonitoringService extends Service {
 
   private BeaconConstant bConstant;
   private BeaconManager beaconManager;
-  private BeaconPluginPreference beaconPluginPreference;
 
   @Override
   public void onCreate() {
@@ -36,13 +35,9 @@ public class MonitoringService extends Service {
     beaconManager.setMonitorPeriod(MonitorPeriod.MINIMAL);
     beaconManager.setForceScanConfiguration(ForceScanConfiguration.DEFAULT);
 
-    UUID proximityUUID = BeaconManager.DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID;
-    beaconPluginPreference = new BeaconPluginPreference(this);
-    String proximityPreference = beaconPluginPreference.getPreference("BeaconProximityUUID", "");
-
-    if( proximityPreference != "" ) {
-      proximityUUID = UUID.fromString(proximityPreference);
-    }
+    BeaconPluginPreference beaconPluginPreference = new BeaconPluginPreference(this);
+    String proximityPreference = beaconPluginPreference.getPreference( BeaconConstant.UUID_PREFERENCE, BeaconManager.DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID.toString() );
+    UUID proximityUUID = UUID.fromString(proximityPreference);
 
     beaconManager.addFilter(Filters.newProximityUUIDFilter(proximityUUID));
     beaconManager.registerMonitoringListener(new BeaconManager.MonitoringListener() {

@@ -55,14 +55,14 @@ public class BootReceiver extends BroadcastReceiver
       }
     } else if( action.equals(bConstant.MONITORING_APPEARED_INTENT) ) {
       final Date date = new Date();
-      final Date expireDate = new Date( date.getTime() + BeaconPluginPreference.ETLN_PREFERENCE_DEFAULT );
-      final String enterRegionLocalNotification = beaconPluginPreference.getPreference("BeaconEnterRegionLocalNotification", "You did enter beacon region!");
-      final long expireTimeLocalNotification = beaconPluginPreference.getPreference("BeaconExpireTimeLocalNotification", date.getTime());
+      final Date expireDate = new Date( date.getTime() + BeaconConstant.ETLN_PREFERENCE_DEFAULT );
+      final String enterRegionLocalNotification = beaconPluginPreference.getPreference( BeaconConstant.ERLN_PREFERENCE , BeaconConstant.ERLN_PREFERENCE_DEFAULT );
+      final long expireTimeLocalNotification = beaconPluginPreference.getPreference( BeaconConstant.ETLN_PREFERENCE, date.getTime() );
 
       if( date.getTime() >= expireTimeLocalNotification ) {
         try {
           sendNotification(context, "Beacon", enterRegionLocalNotification);
-          beaconPluginPreference.setPreference("BeaconExpireTimeLocalNotification", expireDate.getTime());
+          beaconPluginPreference.setPreference( BeaconConstant.ETLN_PREFERENCE, expireDate.getTime());
         } catch (Exception e) {
         }
       }

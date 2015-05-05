@@ -26,20 +26,13 @@ public class Beacon extends CordovaPlugin {
   // Reference to the web view for static access
   private static CordovaWebView webView = null;
 
-  // Reference to the web view for static access
-  private BeaconPluginPreference beaconPluginPreference;
-
-  // Preferences
-  public static String proximityUUID = null;
-  public static String enterRegionLocalNotification = null;
-
   @Override
   public void initialize(CordovaInterface cordova, CordovaWebView webView) {
     Beacon.webView = super.webView;
 
-    beaconPluginPreference = new BeaconPluginPreference(cordova.getActivity().getApplicationContext());
-    beaconPluginPreference.setPreference("BeaconProximityUUID", preferences.getString("BeaconProximityUUID", null));
-    beaconPluginPreference.setPreference("BeaconEnterRegionLocalNotification", preferences.getString("BeaconEnterRegionLocalNotification", null));
+    BeaconPluginPreference beaconPluginPreference = new BeaconPluginPreference(cordova.getActivity().getApplicationContext());
+    beaconPluginPreference.setPreference( BeaconConstant.UUID_PREFERENCE , preferences.getString( BeaconConstant.UUID_PREFERENCE, "" ));
+    beaconPluginPreference.setPreference( BeaconConstant.ERLN_PREFERENCE , preferences.getString( BeaconConstant.ERLN_PREFERENCE, "" ));
 
     Intent intent = new Intent( BeaconConstant.BOOT_MONITORING_INTENT);
     cordova.getActivity().sendBroadcast(intent);

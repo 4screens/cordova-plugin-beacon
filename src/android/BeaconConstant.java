@@ -12,4 +12,10 @@ public class BeaconConstant {
 
   public static final String EXTRA_DEVICE_ID = "net.nopattern.cordova.beacon.extra.DEVICE_ID";
   public static final String EXTRA_DEVICE_ACCURACY = "net.nopattern.cordova.beacon.extra.DEVICE_ACCURACY";
+
+  public static final String UUID_PREFERENCE = "BeaconProximityUUID";
+  public static final String ERLN_PREFERENCE = "BeaconEnterRegionLocalNotification";
+  public static final String ERLN_PREFERENCE_DEFAULT = "You did enter beacon region!";
+  public static final String ETLN_PREFERENCE = "BeaconExpireTimeLocalNotification";
+  public static final int ETLN_PREFERENCE_DEFAULT = 60 * 60 * 1000;
 }
