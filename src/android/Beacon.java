@@ -31,8 +31,8 @@ public class Beacon extends CordovaPlugin {
     Beacon.webView = super.webView;
 
     BeaconPluginPreference beaconPluginPreference = new BeaconPluginPreference(cordova.getActivity().getApplicationContext());
-    beaconPluginPreference.setPreference( BeaconConstant.UUID_PREFERENCE , preferences.getString( BeaconConstant.UUID_PREFERENCE, "" ));
-    beaconPluginPreference.setPreference( BeaconConstant.ERLN_PREFERENCE , preferences.getString( BeaconConstant.ERLN_PREFERENCE, "" ));
+    beaconPluginPreference.setPreference( BeaconConstant.UUID_PREFERENCE , preferences.getString( BeaconConstant.UUID_PREFERENCE, null ));
+    beaconPluginPreference.setPreference( BeaconConstant.ERLN_PREFERENCE , preferences.getString( BeaconConstant.ERLN_PREFERENCE, null ));
 
     Intent intent = new Intent( BeaconConstant.BOOT_MONITORING_INTENT);
     cordova.getActivity().sendBroadcast(intent);
