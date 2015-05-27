@@ -25,7 +25,7 @@
       <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     </config-file>
     <config-file parent="/manifest/application" target="AndroidManifest.xml">
-      <receiver android:name="net.nopattern.cordova.beacon.receiver.BootReceiver">
+      <receiver android:name="net.nopattern.cordova.beacon.receiver.BeaconReceiver">
         <intent-filter>
           <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
           <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -39,7 +39,7 @@
       <service android:exported="false" android:name="com.kontakt.sdk.android.manager.BeaconServiceL" />
     </config-file>
     <!-- src -->
-    <source-file src="src/android/receiver/BootReceiver.java" target-dir="src/net/nopattern/cordova/beacon/receiver" />
+    <source-file src="src/android/receiver/BeaconReceiver.java" target-dir="src/net/nopattern/cordova/beacon/receiver" />
     <source-file src="src/android/service/LocationService.java" target-dir="src/net/nopattern/cordova/beacon/service" />
     <source-file src="src/android/BeaconConstant.java" target-dir="src/net/nopattern/cordova/beacon" />
     <source-file src="src/android/BeaconPlugin.java" target-dir="src/net/nopattern/cordova/beacon" />

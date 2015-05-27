@@ -18,7 +18,7 @@ import net.nopattern.cordova.beacon.BeaconConstant;
 import net.nopattern.cordova.beacon.BeaconPluginPreference;
 import net.nopattern.cordova.beacon.service.LocationService;
 
-public class BootReceiver extends BroadcastReceiver
+public class BeaconReceiver extends BroadcastReceiver
 {
   BeaconConstant bConstant;
   private BeaconPluginPreference beaconPluginPreference = null;
