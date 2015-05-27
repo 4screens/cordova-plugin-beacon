@@ -34,13 +34,13 @@
           <action android:name="net.nopattern.cordova.beacon.MONITORING_APPEARED" />
         </intent-filter>
       </receiver>
-      <service android:exported="false" android:name="net.nopattern.cordova.beacon.service.MonitoringService" />
+      <service android:exported="false" android:name="net.nopattern.cordova.beacon.service.LocationService" />
       <service android:exported="false" android:name="com.kontakt.sdk.android.manager.BeaconService" />
       <service android:exported="false" android:name="com.kontakt.sdk.android.manager.BeaconServiceL" />
     </config-file>
     <!-- src -->
     <source-file src="src/android/receiver/BootReceiver.java" target-dir="src/net/nopattern/cordova/beacon/receiver" />
-    <source-file src="src/android/service/MonitoringService.java" target-dir="src/net/nopattern/cordova/beacon/service" />
+    <source-file src="src/android/service/LocationService.java" target-dir="src/net/nopattern/cordova/beacon/service" />
     <source-file src="src/android/BeaconConstant.java" target-dir="src/net/nopattern/cordova/beacon" />
     <source-file src="src/android/BeaconPlugin.java" target-dir="src/net/nopattern/cordova/beacon" />
     <source-file src="src/android/BeaconPluginPreference.java" target-dir="src/net/nopattern/cordova/beacon" />

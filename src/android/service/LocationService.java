@@ -22,7 +22,7 @@ import java.util.UUID;
 import net.nopattern.cordova.beacon.BeaconConstant;
 import net.nopattern.cordova.beacon.BeaconPluginPreference;
 
-public class MonitoringService extends Service {
+public class LocationService extends Service {
 
   private BeaconConstant bConstant;
   private BeaconManager beaconManager;
@@ -119,8 +119,8 @@ public class MonitoringService extends Service {
   }
 
   public class LocalBinder extends Binder {
-    public MonitoringService getService() {
-      return MonitoringService.this;
+    public LocationService getService() {
+      return LocationService.this;
     }
   }
 

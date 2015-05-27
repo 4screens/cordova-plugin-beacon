@@ -16,7 +16,7 @@ import java.util.Date;
 
 import net.nopattern.cordova.beacon.BeaconConstant;
 import net.nopattern.cordova.beacon.BeaconPluginPreference;
-import net.nopattern.cordova.beacon.service.MonitoringService;
+import net.nopattern.cordova.beacon.service.LocationService;
 
 public class BootReceiver extends BroadcastReceiver
 {
@@ -71,13 +71,13 @@ public class BootReceiver extends BroadcastReceiver
 
   private void startMonitoringService(Context context)
   {
-    Intent intent = new Intent(context,MonitoringService.class);
+    Intent intent = new Intent(context,LocationService.class);
     context.startService(intent);
   }
 
   private void stopMonitoringService(Context context)
   {
-    Intent intent = new Intent(context,MonitoringService.class);
+    Intent intent = new Intent(context,LocationService.class);
     context.stopService(intent);
   }
 
