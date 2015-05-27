@@ -21,14 +21,14 @@ import net.nopattern.cordova.beacon.BeaconConstant;
 /**
  * This class echoes a string called from JavaScript.
  */
-public class Beacon extends CordovaPlugin {
+public class BeaconPlugin extends CordovaPlugin {
 
   // Reference to the web view for static access
   private static CordovaWebView webView = null;
 
   @Override
   public void initialize(CordovaInterface cordova, CordovaWebView webView) {
-    Beacon.webView = super.webView;
+    BeaconPlugin.webView = super.webView;
 
     BeaconPluginPreference beaconPluginPreference = new BeaconPluginPreference(cordova.getActivity().getApplicationContext());
     beaconPluginPreference.setPreference( BeaconConstant.UUID_PREFERENCE , preferences.getString( BeaconConstant.UUID_PREFERENCE, null ));
