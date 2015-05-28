@@ -1,6 +1,14 @@
 var exec = require('cordova/exec')
   , channel = require('cordova/channel');
 
+exports.receiveBeaconAppeared = function(success, error) {
+  exec(success, error, "BeaconPlugin", "receiveBeaconAppeared", []);
+};
+
+exports.clearBeaconAppeared = function(success, error) {
+  exec(success, error, "BeaconPlugin", "clearBeaconAppeared", []);
+};
+
 exports._listener = {};
 
 exports.fireEvent = function( event ) {
