@@ -16,7 +16,7 @@ import java.lang.String;
 import java.util.UUID;
 
 import net.nopattern.cordova.beacon.BeaconPluginPreference;
-import net.nopattern.cordova.beacon.BeaconConstant;
+import net.nopattern.cordova.beacon.BeaconPluginConstant;
 
 /**
  * This class echoes a string called from JavaScript.
@@ -25,16 +25,17 @@ public class BeaconPlugin extends CordovaPlugin {
 
   // Reference to the web view for static access
   private static CordovaWebView webView = null;
+  private BeaconPluginPreference beaconPluginPreference = null;
 
   @Override
   public void initialize(CordovaInterface cordova, CordovaWebView webView) {
     BeaconPlugin.webView = super.webView;
 
-    BeaconPluginPreference beaconPluginPreference = new BeaconPluginPreference(cordova.getActivity().getApplicationContext());
-    beaconPluginPreference.setPreference( BeaconConstant.UUID_PREFERENCE , preferences.getString( BeaconConstant.UUID_PREFERENCE, null ));
-    beaconPluginPreference.setPreference( BeaconConstant.ERLN_PREFERENCE , preferences.getString( BeaconConstant.ERLN_PREFERENCE, null ));
+    beaconPluginPreference = new BeaconPluginPreference(cordova.getActivity().getApplicationContext());
+    beaconPluginPreference.setPreference(BeaconPluginConstant.UUID_PREFERENCE , preferences.getString(BeaconPluginConstant.UUID_PREFERENCE, null));
+    beaconPluginPreference.setPreference(BeaconPluginConstant.ERLN_PREFERENCE , preferences.getString(BeaconPluginConstant.ERLN_PREFERENCE, null));
 
-    Intent intent = new Intent( BeaconConstant.BOOT_MONITORING_INTENT);
+    Intent intent = new Intent(BeaconPluginConstant.BOOT_MONITORING_SERVICE_INTENT);
     cordova.getActivity().sendBroadcast(intent);
   }
 
@@ -50,7 +51,7 @@ public class BeaconPlugin extends CordovaPlugin {
   private void intentHandler(Intent intent) {
     String action = intent.getAction();
 
-    if( action.equals( BeaconConstant.NOTIFICATION_INTENT ) ) {
+    if( action.equals( BeaconPluginConstant.LOCAL_NOTIFICATION_INTENT ) ) {
       fireEvent("didReceiveLocalNotification");
     }
   }

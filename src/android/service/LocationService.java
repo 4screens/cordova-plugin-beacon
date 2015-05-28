@@ -19,68 +19,69 @@ import com.kontakt.sdk.android.factory.Filters;
 import java.util.List;
 import java.util.UUID;
 
-import net.nopattern.cordova.beacon.BeaconConstant;
+import net.nopattern.cordova.beacon.BeaconPluginConstant;
 import net.nopattern.cordova.beacon.BeaconPluginPreference;
 
 public class LocationService extends Service {
 
-  private BeaconConstant bConstant;
   private BeaconManager beaconManager;
 
   @Override
   public void onCreate() {
-    Log.d(bConstant.LOG_TAG, "MonitoringService :: onCreate");
+    Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringService :: onCreate");
 
     beaconManager = BeaconManager.newInstance(this);
     beaconManager.setMonitorPeriod(MonitorPeriod.MINIMAL);
     beaconManager.setForceScanConfiguration(ForceScanConfiguration.DEFAULT);
 
     BeaconPluginPreference beaconPluginPreference = new BeaconPluginPreference(this);
-    String proximityPreference = beaconPluginPreference.getPreference( BeaconConstant.UUID_PREFERENCE, BeaconManager.DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID.toString() );
+    String proximityPreference = beaconPluginPreference.getPreference( BeaconPluginConstant.UUID_PREFERENCE, BeaconManager.DEFAULT_KONTAKT_BEACON_PROXIMITY_UUID.toString() );
     UUID proximityUUID = UUID.fromString(proximityPreference);
 
     beaconManager.addFilter(Filters.newProximityUUIDFilter(proximityUUID));
     beaconManager.registerMonitoringListener(new BeaconManager.MonitoringListener() {
       @Override
       public void onMonitorStart() {
-        Log.d(bConstant.LOG_TAG, "MonitoringService :: beaconManager - onMonitorStart");
+        Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringService :: beaconManager - onMonitorStart");
       }
 
       @Override
       public void onMonitorStop() {
-        Log.d(bConstant.LOG_TAG, "MonitoringService :: beaconManager - onMonitorStop");
+        Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringService :: beaconManager - onMonitorStop");
       }
 
       @Override
       public void onBeaconsUpdated(final Region region, final List<BeaconDevice> beaconDevices) {
-        Log.d(bConstant.LOG_TAG, "MonitoringService :: beaconManager - onBeaconsUpdated");
+        Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringService :: beaconManager - onBeaconsUpdated");
       }
 
       @Override
       public void onBeaconAppeared(final Region region, final BeaconDevice beaconDevice) {
-        Log.d(bConstant.LOG_TAG, "MonitoringService :: beaconManager - onBeaconAppeared");
+        Log.i(BeaconPluginConstant.LOG_TAG, "LocationService :: beaconManager - onBeaconAppeared");
 
-        Intent intent = new Intent(bConstant.MONITORING_APPEARED_INTENT);
-        intent.putExtra(bConstant.EXTRA_DEVICE_ID, beaconDevice.getUniqueId());
-        intent.putExtra(bConstant.EXTRA_DEVICE_ACCURACY, beaconDevice.getAccuracy());
+        Intent intent = new Intent(BeaconPluginConstant.BEACON_APPEARED_INTENT);
+        intent.putExtra(BeaconPluginConstant.PROXIMITY_UUID_EXTRA, beaconDevice.getProximityUUID().toString());
+        intent.putExtra(BeaconPluginConstant.DEVICE_ID_EXTRA, beaconDevice.getUniqueId());
+        intent.putExtra(BeaconPluginConstant.MAJOR_EXTRA, beaconDevice.getMajor());
+        intent.putExtra(BeaconPluginConstant.MINOR_EXTRA, beaconDevice.getMinor());
         getApplicationContext().sendBroadcast(intent);
       }
 
       @Override
       public void onRegionEntered(final Region region) {
-        Log.d(bConstant.LOG_TAG, "MonitoringService :: beaconManager - onRegionEntered");
+        Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringService :: beaconManager - onRegionEntered");
       }
 
       @Override
       public void onRegionAbandoned(final Region region) {
-        Log.d(bConstant.LOG_TAG, "MonitoringService :: beaconManager - onRegionAbandoned");
+        Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringService :: beaconManager - onRegionAbandoned");
       }
     });
   }
 
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
-    Log.d(bConstant.LOG_TAG, "MonitoringService :: onStartCommand");
+    Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringService :: onStartCommand");
 
     if(beaconManager.isBluetoothEnabled()) {
       try {
@@ -101,12 +102,12 @@ public class LocationService extends Service {
 
   @Override
   public void onTaskRemoved(Intent rootIntent) {
-    Log.d(bConstant.LOG_TAG, "MonitoringService :: onTaskRemoved");
+    Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringService :: onTaskRemoved");
   }
 
   @Override
   public void onDestroy() {
-    Log.d(bConstant.LOG_TAG, "MonitoringService :: onDestroy");
+    Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringService :: onDestroy");
     super.onDestroy();
 
     beaconManager.disconnect();

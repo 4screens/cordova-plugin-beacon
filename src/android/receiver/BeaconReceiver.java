@@ -14,43 +14,42 @@ import android.util.Log;
 import java.lang.Exception;
 import java.util.Date;
 
-import net.nopattern.cordova.beacon.BeaconConstant;
+import net.nopattern.cordova.beacon.BeaconPluginConstant;
 import net.nopattern.cordova.beacon.BeaconPluginPreference;
 import net.nopattern.cordova.beacon.service.LocationService;
 
 public class BeaconReceiver extends BroadcastReceiver
 {
-  BeaconConstant bConstant;
   private BeaconPluginPreference beaconPluginPreference = null;
 
   public void onReceive(Context context, Intent intent)
   {
-    Log.d(bConstant.LOG_TAG, "BootReceiver :: onReceive: " + intent.getAction());
+    Log.d(BeaconPluginConstant.LOG_TAG, "BootReceiver :: onReceive: " + intent.getAction());
     String action = intent.getAction();
 
     if( beaconPluginPreference == null ) {
       beaconPluginPreference = new BeaconPluginPreference(context);
     }
 
-    if( action == bConstant.BOOT_COMPLETED_INTENT || action == bConstant.BOOT_MONITORING_INTENT ) {
+    if( action == BeaconPluginConstant.BOOT_COMPLETED_INTENT || action == BeaconPluginConstant.BOOT_MONITORING_SERVICE_INTENT ) {
       startMonitoringService(context);
-    } else if( action.equals(bConstant.STATE_CHANGED_INTENT) ) {
+    } else if( action.equals(BeaconPluginConstant.STATE_CHANGED_INTENT) ) {
       final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
 
       switch( state ) {
         case BluetoothAdapter.STATE_OFF:
-          Log.d(bConstant.LOG_TAG, "BootReceiver :: Bluetooth OFF");
+          Log.d(BeaconPluginConstant.LOG_TAG, "BootReceiver :: Bluetooth OFF");
           break;
         case BluetoothAdapter.STATE_TURNING_OFF:
-          Log.d(bConstant.LOG_TAG, "BootReceiver :: Bluetooth off...");
+          Log.d(BeaconPluginConstant.LOG_TAG, "BootReceiver :: Bluetooth off...");
           stopMonitoringService(context);
           break;
         case BluetoothAdapter.STATE_ON:
-          Log.d(bConstant.LOG_TAG, "BootReceiver :: Bluetooth ON");
+          Log.d(BeaconPluginConstant.LOG_TAG, "BootReceiver :: Bluetooth ON");
           startMonitoringService(context);
           break;
         case BluetoothAdapter.STATE_TURNING_ON:
-          Log.d(bConstant.LOG_TAG, "BootReceiver :: Bluetooth on...");
+          Log.d(BeaconPluginConstant.LOG_TAG, "BootReceiver :: Bluetooth on...");
           break;
       }
     } else if( action.equals(bConstant.MONITORING_APPEARED_INTENT) ) {
@@ -86,7 +85,7 @@ public class BeaconReceiver extends BroadcastReceiver
     Activity act = (Activity) cls.getConstructor().newInstance();
 
     Intent notificationIntent = new Intent(context, act.getClass());
-    notificationIntent.setAction(bConstant.NOTIFICATION_INTENT);
+    notificationIntent.setAction(BeaconPluginConstant.LOCAL_NOTIFICATION_INTENT);
 
     PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 

@@ -8,7 +8,7 @@ import android.util.Log;
 import java.lang.Long;
 import java.lang.String;
 
-import net.nopattern.cordova.beacon.BeaconConstant;
+import net.nopattern.cordova.beacon.BeaconPluginConstant;
 
 public class BeaconPluginPreference {
 
@@ -21,26 +21,26 @@ public class BeaconPluginPreference {
   }
 
   public void setPreference(String key, String value) {
-    Log.i( BeaconConstant.LOG_TAG, "BeaconPluginPreference :: set '" + key + "' = " + "'" + value + "'" );
+    Log.i( BeaconPluginConstant.LOG_TAG, "BeaconPluginPreference :: setString '" + key + "' = " + "'" + value + "'" );
     preferencesEditor.putString(key, value);
     preferencesEditor.commit();
   }
 
   public void setPreference(String key, long value) {
-    Log.i( BeaconConstant.LOG_TAG, "BeaconPluginPreference :: set '" + key + "' = " + "'" + Long.toString(value) + "'" );
+    Log.i( BeaconPluginConstant.LOG_TAG, "BeaconPluginPreference :: setLong '" + key + "' = " + "'" + Long.toString(value) + "'" );
     preferencesEditor.putLong(key, value);
     preferencesEditor.commit();
   }
 
   public String getPreference(String key, String defaultValue) {
     String result = preferences.getString(key, defaultValue);
-    Log.i( BeaconConstant.LOG_TAG, "BeaconPluginPreference :: get '" + key + "' = " + "'" + result + "'" );
+    Log.i(BeaconPluginConstant.LOG_TAG, "BeaconPluginPreference :: getString '" + key + "' = " + "'" + result + "'");
     return result;
   }
 
   public long getPreference(String key, long defaultValue) {
     long result = preferences.getLong(key, defaultValue);
-    Log.i( BeaconConstant.LOG_TAG, "BeaconPluginPreference :: get '" + key + "' = " + "'" + Long.toString(result) + "'" );
+    Log.i( BeaconPluginConstant.LOG_TAG, "BeaconPluginPreference :: getLong '" + key + "' = " + "'" + Long.toString(result) + "'" );
     return result;
   }
 }

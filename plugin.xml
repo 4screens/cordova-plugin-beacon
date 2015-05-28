@@ -29,9 +29,9 @@
         <intent-filter>
           <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
           <action android:name="android.intent.action.BOOT_COMPLETED" />
-          <action android:name="net.nopattern.cordova.beacon.BOOT_MONITORING" />
-          <action android:name="net.nopattern.cordova.beacon.BOOT_RANGING" />
-          <action android:name="net.nopattern.cordova.beacon.MONITORING_APPEARED" />
+          <action android:name="net.nopattern.cordova.beacon.BOOT_RANGING_SERVICE" />
+          <action android:name="net.nopattern.cordova.beacon.BOOT_MONITORING_SERVICE" />
+          <action android:name="net.nopattern.cordova.beacon.BEACON_APPEARED" />
         </intent-filter>
       </receiver>
       <service android:exported="false" android:name="net.nopattern.cordova.beacon.service.LocationService" />
@@ -41,7 +41,7 @@
     <!-- src -->
     <source-file src="src/android/receiver/BeaconReceiver.java" target-dir="src/net/nopattern/cordova/beacon/receiver" />
     <source-file src="src/android/service/LocationService.java" target-dir="src/net/nopattern/cordova/beacon/service" />
-    <source-file src="src/android/BeaconConstant.java" target-dir="src/net/nopattern/cordova/beacon" />
+    <source-file src="src/android/BeaconPluginConstant.java" target-dir="src/net/nopattern/cordova/beacon" />
     <source-file src="src/android/BeaconPlugin.java" target-dir="src/net/nopattern/cordova/beacon" />
     <source-file src="src/android/BeaconPluginPreference.java" target-dir="src/net/nopattern/cordova/beacon" />
     <!-- libs -->
