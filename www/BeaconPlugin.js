@@ -1,6 +1,14 @@
 var exec = require('cordova/exec')
   , channel = require('cordova/channel');
 
+exports.setProximityUUID = function(proximityUUID, success, error) {
+  exec(success, error, "BeaconPlugin", "setBeaconProximityUUID", [proximityUUID]);
+};
+
+exports.setEnterRegionLocalNotification = function(enterRegionLocalNotification, success, error) {
+  exec(success, error, "BeaconPlugin", "setEnterRegionLocalNotification", [enterRegionLocalNotification]);
+};
+
 exports.receiveBeaconAppeared = function(success, error) {
   exec(success, error, "BeaconPlugin", "receiveBeaconAppeared", []);
 };
