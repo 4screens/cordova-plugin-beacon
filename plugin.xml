@@ -31,7 +31,9 @@
           <action android:name="android.intent.action.BOOT_COMPLETED" />
           <action android:name="net.nopattern.cordova.beacon.BOOT_RANGING_SERVICE" />
           <action android:name="net.nopattern.cordova.beacon.BOOT_MONITORING_SERVICE" />
+          <action android:name="net.nopattern.cordova.beacon.REBOOT_MONITORING_SERVICE"></action>
           <action android:name="net.nopattern.cordova.beacon.BEACON_APPEARED" />
+          <action android:name="net.nopattern.cordova.beacon.BEACON_BEHAVIOR" />
         </intent-filter>
       </receiver>
       <service android:exported="false" android:name="net.nopattern.cordova.beacon.service.LocationService" />

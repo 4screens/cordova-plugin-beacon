@@ -12,7 +12,12 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.lang.Exception;
+import java.lang.Integer;
+import java.lang.InternalError;
+import java.lang.String;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import net.nopattern.cordova.beacon.BeaconPluginConstant;
 import net.nopattern.cordova.beacon.BeaconPluginPreference;
@@ -52,19 +57,13 @@ public class BeaconReceiver extends BroadcastReceiver
           Log.d(BeaconPluginConstant.LOG_TAG, "BootReceiver :: Bluetooth on...");
           break;
       }
-    } else if( action.equals(bConstant.MONITORING_APPEARED_INTENT) ) {
-      final Date date = new Date();
-      final Date expireDate = new Date( date.getTime() + BeaconConstant.ETLN_PREFERENCE_DEFAULT );
-      final String enterRegionLocalNotification = beaconPluginPreference.getPreference( BeaconConstant.ERLN_PREFERENCE , BeaconConstant.ERLN_PREFERENCE_DEFAULT );
-      final long expireTimeLocalNotification = beaconPluginPreference.getPreference( BeaconConstant.ETLN_PREFERENCE, date.getTime() );
-
-      if( date.getTime() >= expireTimeLocalNotification ) {
-        try {
-          sendNotification(context, "Beacon", enterRegionLocalNotification);
-          beaconPluginPreference.setPreference( BeaconConstant.ETLN_PREFERENCE, expireDate.getTime());
-        } catch (Exception e) {
-        }
-      }
+    } else if(action.equals(BeaconPluginConstant.BEACON_APPEARED_INTENT) ) {
+      sendNotification(context);
+    } else if(action.equals(BeaconPluginConstant.BEACON_BEHAVIOR_INTENT) ) {
+      saveBeaconBehavior(intent);
+    } else if(action.equals(BeaconPluginConstant.REBOOT_MONITORING_SERVICE_INTENT) ) {
+      stopMonitoringService(context);
+      startMonitoringService(context);
     }
   }
 
@@ -80,7 +79,48 @@ public class BeaconReceiver extends BroadcastReceiver
     context.stopService(intent);
   }
 
-  private void sendNotification(Context context, String title, String text) throws Exception {
+  private void saveBeaconBehavior(Intent intent) {
+    Log.i(BeaconPluginConstant.LOG_TAG, "BootReceiver :: saveBeaconBehavior");
+
+    final Date date = new Date();
+    final String prefix = Long.toString(date.getTime()) + ":";
+
+    Set<String> proximityUUID = beaconPluginPreference.getPreference(BeaconPluginConstant.BEAP_UUID_PREFERENCE, new HashSet<String>());
+    Set<String> identifier = beaconPluginPreference.getPreference(BeaconPluginConstant.BEAP_IDEN_PREFERENCE, new HashSet<String>());
+    Set<String> major = beaconPluginPreference.getPreference(BeaconPluginConstant.BEAP_MAJOR_PREFERENCE, new HashSet<String>());
+    Set<String> minor = beaconPluginPreference.getPreference(BeaconPluginConstant.BEAP_MINOR_PREFERENCE, new HashSet<String>());
+
+    proximityUUID.add(prefix + intent.getStringExtra(BeaconPluginConstant.PROXIMITY_UUID_EXTRA));
+    identifier.add(prefix + intent.getStringExtra(BeaconPluginConstant.IDENTIFIER_EXTRA));
+    major.add(prefix + Integer.toString(intent.getIntExtra(BeaconPluginConstant.MAJOR_EXTRA, 0)));
+    minor.add(prefix + Integer.toString(intent.getIntExtra(BeaconPluginConstant.MINOR_EXTRA, 0)));
+
+    beaconPluginPreference.setPreference(BeaconPluginConstant.BEAP_UUID_PREFERENCE, proximityUUID);
+    beaconPluginPreference.setPreference(BeaconPluginConstant.BEAP_IDEN_PREFERENCE, identifier);
+    beaconPluginPreference.setPreference(BeaconPluginConstant.BEAP_MAJOR_PREFERENCE, major);
+    beaconPluginPreference.setPreference(BeaconPluginConstant.BEAP_MINOR_PREFERENCE, minor);
+  }
+
+  private void sendNotification(Context context) {
+    Log.i(BeaconPluginConstant.LOG_TAG, "BootReceiver :: sendNotification");
+
+    final Date date = new Date();
+    final Date expireDate = new Date(date.getTime() + BeaconPluginConstant.ETLN_PREFERENCE_DEFAULT);
+    final String enterRegionLocalNotification = beaconPluginPreference.getPreference(BeaconPluginConstant.ERLN_PREFERENCE , BeaconPluginConstant.ERLN_PREFERENCE_DEFAULT);
+    final long expireTimeLocalNotification = beaconPluginPreference.getPreference(BeaconPluginConstant.ETLN_PREFERENCE, date.getTime());
+
+    if( date.getTime() >= expireTimeLocalNotification ) {
+      try {
+        buildNotification(context, "Beacon", enterRegionLocalNotification);
+        beaconPluginPreference.setPreference( BeaconPluginConstant.ETLN_PREFERENCE, expireDate.getTime());
+      } catch (Exception e) {
+      }
+    }
+  }
+
+  private void buildNotification(Context context, String title, String text) throws Exception {
+    Log.i(BeaconPluginConstant.LOG_TAG, "BootReceiver :: buildNotification");
+
     Class cls = Class.forName(context.getPackageName() + ".MainActivity");
     Activity act = (Activity) cls.getConstructor().newInstance();
 

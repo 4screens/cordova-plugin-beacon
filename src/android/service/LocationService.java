@@ -16,6 +16,8 @@ import com.kontakt.sdk.android.device.Region;
 import com.kontakt.sdk.android.factory.AdvertisingPackage;
 import com.kontakt.sdk.android.factory.Filters;
 
+import java.lang.Exception;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,10 +27,11 @@ import net.nopattern.cordova.beacon.BeaconPluginPreference;
 public class LocationService extends Service {
 
   private BeaconManager beaconManager;
+  private List<BeaconDevice> lastKnownBeacons = new ArrayList<BeaconDevice>();
 
   @Override
   public void onCreate() {
-    Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringService :: onCreate");
+    Log.d(BeaconPluginConstant.LOG_TAG, "LocationService :: onCreate");
 
     beaconManager = BeaconManager.newInstance(this);
     beaconManager.setMonitorPeriod(MonitorPeriod.MINIMAL);
@@ -42,46 +45,63 @@ public class LocationService extends Service {
     beaconManager.registerMonitoringListener(new BeaconManager.MonitoringListener() {
       @Override
       public void onMonitorStart() {
-        Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringService :: beaconManager - onMonitorStart");
+        Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringListener :: beaconManager - onMonitorStart");
       }
 
       @Override
       public void onMonitorStop() {
-        Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringService :: beaconManager - onMonitorStop");
+        Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringListener :: beaconManager - onMonitorStop");
       }
 
       @Override
-      public void onBeaconsUpdated(final Region region, final List<BeaconDevice> beaconDevices) {
-        Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringService :: beaconManager - onBeaconsUpdated");
+      public void onBeaconsUpdated(final Region region, final List<BeaconDevice> knownBeacons) {
+        Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringListener :: beaconManager - onBeaconsUpdated " + knownBeacons.size());
       }
 
       @Override
       public void onBeaconAppeared(final Region region, final BeaconDevice beaconDevice) {
-        Log.i(BeaconPluginConstant.LOG_TAG, "LocationService :: beaconManager - onBeaconAppeared");
+        Log.i(BeaconPluginConstant.LOG_TAG, "MonitoringListener :: beaconManager - onBeaconAppeared");
 
-        Intent intent = new Intent(BeaconPluginConstant.BEACON_APPEARED_INTENT);
-        intent.putExtra(BeaconPluginConstant.PROXIMITY_UUID_EXTRA, beaconDevice.getProximityUUID().toString());
-        intent.putExtra(BeaconPluginConstant.DEVICE_ID_EXTRA, beaconDevice.getUniqueId());
-        intent.putExtra(BeaconPluginConstant.MAJOR_EXTRA, beaconDevice.getMajor());
-        intent.putExtra(BeaconPluginConstant.MINOR_EXTRA, beaconDevice.getMinor());
-        getApplicationContext().sendBroadcast(intent);
+        Intent intentBehavior = new Intent(BeaconPluginConstant.BEACON_BEHAVIOR_INTENT);
+        intentBehavior.putExtra(BeaconPluginConstant.PROXIMITY_UUID_EXTRA, beaconDevice.getProximityUUID().toString());
+        intentBehavior.putExtra(BeaconPluginConstant.IDENTIFIER_EXTRA, beaconDevice.getUniqueId());
+        intentBehavior.putExtra(BeaconPluginConstant.MAJOR_EXTRA, beaconDevice.getMajor());
+        intentBehavior.putExtra(BeaconPluginConstant.MINOR_EXTRA, beaconDevice.getMinor());
+        getApplicationContext().sendBroadcast(intentBehavior);
+
+        Intent intentAppeared = new Intent(BeaconPluginConstant.BEACON_APPEARED_INTENT);
+        getApplicationContext().sendBroadcast(intentAppeared);
       }
 
       @Override
       public void onRegionEntered(final Region region) {
-        Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringService :: beaconManager - onRegionEntered");
+        Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringListener :: beaconManager - onRegionEntered");
       }
 
       @Override
       public void onRegionAbandoned(final Region region) {
-        Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringService :: beaconManager - onRegionAbandoned");
+        Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringListener :: beaconManager - onRegionAbandoned");
       }
     });
   }
 
+  static boolean beaconEquals(List<BeaconDevice> lastKnownBeacons, BeaconDevice knownBeacon) {
+    for (BeaconDevice lastKnownBeacon : lastKnownBeacons) {
+      if (
+        lastKnownBeacon.getProximityUUID().toString().equals(knownBeacon.getProximityUUID().toString()) &&
+        lastKnownBeacon.getMajor() == knownBeacon.getMajor() &&
+        lastKnownBeacon.getMinor() == knownBeacon.getMinor()
+      ) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
-    Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringService :: onStartCommand");
+    Log.d(BeaconPluginConstant.LOG_TAG, "LocationService :: onStartCommand");
 
     if(beaconManager.isBluetoothEnabled()) {
       try {
@@ -102,12 +122,12 @@ public class LocationService extends Service {
 
   @Override
   public void onTaskRemoved(Intent rootIntent) {
-    Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringService :: onTaskRemoved");
+    Log.d(BeaconPluginConstant.LOG_TAG, "LocationService :: onTaskRemoved");
   }
 
   @Override
   public void onDestroy() {
-    Log.d(BeaconPluginConstant.LOG_TAG, "MonitoringService :: onDestroy");
+    Log.d(BeaconPluginConstant.LOG_TAG, "LocationService :: onDestroy");
     super.onDestroy();
 
     beaconManager.disconnect();
@@ -116,15 +136,6 @@ public class LocationService extends Service {
 
   @Override
   public IBinder onBind(Intent intent) {
-    return binder;
+    return null;
   }
-
-  public class LocalBinder extends Binder {
-    public LocationService getService() {
-      return LocationService.this;
-    }
-  }
-
-  // This is the object that receives interactions from clients.
-  private final IBinder binder = new LocalBinder();
 }

@@ -5,8 +5,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.lang.Integer;
 import java.lang.Long;
 import java.lang.String;
+import java.util.Set;
 
 import net.nopattern.cordova.beacon.BeaconPluginConstant;
 
@@ -32,6 +34,12 @@ public class BeaconPluginPreference {
     preferencesEditor.commit();
   }
 
+  public void setPreference(String key, Set<String> value) {
+    Log.i( BeaconPluginConstant.LOG_TAG, "BeaconPluginPreference :: setStringSet '" + key + "' = " + "'" + Integer.toString(value.size()) + "'" );
+    preferencesEditor.putStringSet(key, value);
+    preferencesEditor.commit();
+  }
+
   public String getPreference(String key, String defaultValue) {
     String result = preferences.getString(key, defaultValue);
     Log.i(BeaconPluginConstant.LOG_TAG, "BeaconPluginPreference :: getString '" + key + "' = " + "'" + result + "'");
@@ -41,6 +49,12 @@ public class BeaconPluginPreference {
   public long getPreference(String key, long defaultValue) {
     long result = preferences.getLong(key, defaultValue);
     Log.i( BeaconPluginConstant.LOG_TAG, "BeaconPluginPreference :: getLong '" + key + "' = " + "'" + Long.toString(result) + "'" );
+    return result;
+  }
+
+  public Set<String> getPreference(String key, Set<String> defaultValue) {
+    Set<String> result = preferences.getStringSet(key, defaultValue);
+    Log.i( BeaconPluginConstant.LOG_TAG, "BeaconPluginPreference :: getStringSet '" + key + "' = " + "'" + Integer.toString(result.size()) + "'" );
     return result;
   }
 }
