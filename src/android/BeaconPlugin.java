@@ -32,8 +32,6 @@ public class BeaconPlugin extends CordovaPlugin {
     BeaconPlugin.webView = super.webView;
 
     beaconPluginPreference = new BeaconPluginPreference(cordova.getActivity().getApplicationContext());
-    beaconPluginPreference.setPreference(BeaconPluginConstant.UUID_PREFERENCE , preferences.getString(BeaconPluginConstant.UUID_PREFERENCE, null));
-    beaconPluginPreference.setPreference(BeaconPluginConstant.ERLN_PREFERENCE , preferences.getString(BeaconPluginConstant.ERLN_PREFERENCE, null));
 
     Intent intent = new Intent(BeaconPluginConstant.BOOT_MONITORING_SERVICE_INTENT);
     cordova.getActivity().sendBroadcast(intent);
@@ -46,6 +44,21 @@ public class BeaconPlugin extends CordovaPlugin {
   @Override
   public void onNewIntent(Intent intent) {
     intentHandler(intent);
+  }
+
+  public void setBeaconProximityUUID(String proximityUUID, CallbackContext callbackContext) {
+    Log.i(BeaconPluginConstant.LOG_TAG, "BeaconPlugin :: setBeaconProximityUUID '" + proximityUUID + "'");
+
+    beaconPluginPreference.setPreference(BeaconPluginConstant.UUID_PREFERENCE, proximityUUID);
+
+    Intent intent = new Intent(BeaconPluginConstant.REBOOT_MONITORING_SERVICE_INTENT);
+    cordova.getActivity().sendBroadcast(intent);
+  }
+
+  public void setEnterRegionLocalNotification(String message, CallbackContext callbackContext) {
+    Log.i(BeaconPluginConstant.LOG_TAG, "BeaconPlugin :: setEnterRegionLocalNotification '" + message + "'");
+
+    beaconPluginPreference.setPreference(BeaconPluginConstant.ERLN_PREFERENCE, message);
   }
 
   private void intentHandler(Intent intent) {

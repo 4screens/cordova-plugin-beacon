@@ -9,12 +9,12 @@ exports.setEnterRegionLocalNotification = function(enterRegionLocalNotification,
   exec(success, error, "BeaconPlugin", "setEnterRegionLocalNotification", [enterRegionLocalNotification]);
 };
 
-exports.receiveBeaconAppeared = function(success, error) {
-  exec(success, error, "BeaconPlugin", "receiveBeaconAppeared", []);
+exports.receiveBeaconBehavior = function(success, error) {
+  exec(success, error, "BeaconPlugin", "receiveBeaconBehavior", []);
 };
 
-exports.clearBeaconAppeared = function(success, error) {
-  exec(success, error, "BeaconPlugin", "clearBeaconAppeared", []);
+exports.clearBeaconBehavior = function(success, error) {
+  exec(success, error, "BeaconPlugin", "clearBeaconBehavior", []);
 };
 
 exports._listener = {};

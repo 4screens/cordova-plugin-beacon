@@ -7,8 +7,8 @@
   <description>Cordova Beacon Plugin</description>
   <keywords>cordova,beacon,ibeacon</keywords>
 
-  <js-module name="Beacon" src="www/BeaconPlugin.js">
-    <clobbers target="cordova.plugins.Beacon" />
+  <js-module name="BeaconPlugin" src="www/BeaconPlugin.js">
+    <clobbers target="cordova.plugins.BeaconPlugin" />
   </js-module>
 
   <!-- android -->
