@@ -100,7 +100,7 @@ public class BeaconPlugin extends CordovaPlugin {
   }
 
   private void fireEvent( String eventName ) {
-    final String js = "window.cordova.plugins.Beacon.fireEvent(" +
+    final String js = "window.cordova.plugins.BeaconPlugin.fireEvent(" +
       "\"" + eventName + "\")";
 
     cordova.getActivity().runOnUiThread(new Runnable() {
@@ -142,7 +142,7 @@ public class BeaconPlugin extends CordovaPlugin {
           element = elements.optJSONObject(i);
           if (element == null) {
             element = new JSONObject();
-            element.put("date", parts[0].substring(0, 10));
+            element.put("date", parts[0]);
             elements.put(element);
           }
 
