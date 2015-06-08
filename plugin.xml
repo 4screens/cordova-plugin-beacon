@@ -55,8 +55,8 @@
   <!-- ios -->
   <platform name="ios">
     <config-file parent="/*" target="config.xml">
-      <feature name="Beacon">
-        <param name="ios-package" value="Beacon" />
+      <feature name="BeaconPlugin">
+        <param name="ios-package" value="BeaconPlugin" />
         <param name="onload" value="true" />
       </feature>
       <preference name="BackupWebStorage" value="local" />
@@ -65,8 +65,12 @@
       <string>Required for ios 8 compatibilty</string>
     </config-file>
     <!-- src -->
-    <header-file src="src/ios/Beacon.h" />
-    <source-file src="src/ios/Beacon.m" />
+    <header-file src="src/ios/BeaconPlugin.h" />
+    <header-file src="src/ios/BeaconBehavior.h" />
+    <header-file src="src/ios/BeaconUserDefaults.h" />
+    <source-file src="src/ios/BeaconPlugin.m" />
+    <source-file src="src/ios/BeaconBehavior.m" />
+    <source-file src="src/ios/BeaconUserDefaults.m" />
     <!-- libs -->
     <source-file src="src/ios/libs/kontakt/KontaktSDK.a" framework="true" />
     <header-file src="src/ios/libs/kontakt/KontaktSDK.h" />
