@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.os.Build.VERSION;
 
 import java.lang.Exception;
 import java.lang.Integer;
@@ -30,8 +31,14 @@ public class BeaconReceiver extends BroadcastReceiver
   public void onReceive(Context context, Intent intent)
   {
     Log.d(BeaconPluginConstant.LOG_TAG, "BootReceiver :: onReceive: " + intent.getAction());
+    Log.d(BeaconPluginConstant.LOG_TAG, "BootReceiver :: SDK_INT = " + Integer.toString(VERSION.SDK_INT));
     String action = intent.getAction();
 
+    if (VERSION.SDK_INT <= 17) {
+      // Devices with older Android versions will not be able to interact with Beacons.
+      return;
+    }
+    
     if( beaconPluginPreference == null ) {
       beaconPluginPreference = new BeaconPluginPreference(context);
     }
